@@ -8,29 +8,34 @@ export function fetchQuartzPage(query) {
   });
 }
 
-export function saveDatabase(form) {
+export function saveQuartzJob(form) {
   return request({
-    url: '/api/code/database/save',
+    url: '/api/quartz/updateQuartzJob',
     method: 'post',
     data: form
   });
 }
 
-export function deleteDatabase(id) {
+export function deleteQuartzJob(name,group) {
   return request({
-    url: '/api/code/database/delete',
+    url: '/api/quartz/deleteQuartzJob',
     method: 'post',
-    data: {
-      'id': id
-    }
+    data: {'name': name,'jobGroupName':group}
   });
 }
 
-export function fetchTableList(query) {
+export function pauseQuartzJob(name,group) {
   return request({
-    url: '/api/code/database/tableList',
+    url: '/api/quartz/pauseQuartzJob',
     method: 'post',
-    data: query
+    data: {'name': name,'jobGroupName':group}
+  });
+}
+export function resumeQuartzJob(name,group) {
+  return request({
+    url: '/api/quartz/resumeQuartzJob',
+    method: 'post',
+    data: {'name': name,'jobGroupName':group}
   });
 }
 

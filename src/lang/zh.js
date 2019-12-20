@@ -75,7 +75,7 @@ export default {
     size: '布局大小'
   },
   login: {
-    title: '系统登录',
+    title: '后台管理系统',
     logIn: '登录',
     username: '账号',
     password: '密码',
@@ -134,7 +134,9 @@ export default {
     draft: '草稿',
     delete: '删除',
     cancel: '取 消',
-    confirm: '确 定'
+    confirm: '确 定',
+    pause: '暂停',
+    resume: '恢复'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

@@ -4,7 +4,7 @@
     <el-row :gutter="20">
       <el-col :span="12">
         <el-card class="box-card" style="height: 400px;">
-          <div slot="header" class="clearfix">
+         <!-- <div slot="header" class="clearfix">
             <span>项目介绍</span>
           </div>
           <div style="font-size: 15px;text-indent: 2em;padding: 0px;">
@@ -21,11 +21,13 @@
             <li> 工具类集合：Hutool</li>
             <li> 内网穿透工具：Natapp</li>
           </ol>
-          <!--<div class="text-right">
+          &lt;!&ndash;<div class="text-right">
             <el-button type="primary" @click.native="jumpUrl('web')">前端项目地址</el-button>
             <el-button type="success" @click.native="jumpUrl('api')">后端项目地址</el-button>
             <el-button type="warning" @click.native="jumpUrl('demo')">演示环境</el-button>
-          </div>-->
+          </div>&ndash;&gt;-->
+<!--          <lineChart ref="myChild"></lineChart>-->
+          <line-chart :chart-data="lineChartData"/>
         </el-card>
       </el-col>
       <el-col :span="12">
@@ -91,15 +93,37 @@
 <script>
   import Vue from 'vue';
   import LightTimeline from 'vue-light-timeline';
+  import lineChart from '../admin/components/LineChart';
+
   Vue.use(LightTimeline);
 
   import {getServerInfo} from '@/api/dashboard'
   import TransactionTable from '../admin/components/TransactionTable'
   import {mapGetters} from 'vuex'
   import PanThumb from '@/components/PanThumb'
+
+  const lineChartData = {
+    newVisitis: {
+      expectedData: [100, 120, 161, 134, 105, 160, 165],
+      actualData: [120, 82, 91, 154, 162, 140, 145]
+    },
+    messages: {
+      expectedData: [200, 192, 120, 144, 160, 130, 140],
+      actualData: [180, 160, 151, 106, 145, 150, 130]
+    },
+    purchases: {
+      expectedData: [80, 100, 121, 104, 105, 90, 100],
+      actualData: [120, 90, 100, 138, 142, 130, 130]
+    },
+    shoppings: {
+      expectedData: [130, 140, 141, 142, 145, 150, 160],
+      actualData: [120, 82, 91, 154, 162, 140, 130]
+    }
+  }
+
   export default {
     name: 'DashboardEditor',
-    components: {PanThumb, TransactionTable},
+    components: {PanThumb, TransactionTable,lineChart},
     data() {
       return {
         activeName: '更新日志',
@@ -108,43 +132,44 @@
         faceNum: Math.round(Math.random() * 10000),
         serverInfo: "",
         tableDataCpu: [],
-        tableDataMem:[],
-        tableDataJvm:[],
-        tableDataSys:[],
-        tableDataMemMerge:[],
-        tableDataSysMerge:[],
-        cpu:{
-          "cpuNum":"核心数",
-          "total":"CPU总的使用率",
-          "sys":"CPU系统使用率",
-          "used":"CPU用户使用率",
-          "wait":"CPU当前等待率",
-          "free":"CPU当前空闲率"
+        tableDataMem: [],
+        tableDataJvm: [],
+        tableDataSys: [],
+        tableDataMemMerge: [],
+        tableDataSysMerge: [],
+        lineChartData: lineChartData.newVisitis,
+        cpu: {
+          "cpuNum": "核心数",
+          "total": "CPU总的使用率",
+          "sys": "CPU系统使用率",
+          "used": "CPU用户使用率",
+          "wait": "CPU当前等待率",
+          "free": "CPU当前空闲率"
         },
-        mem:{
-          "total":"内存总量",
-          "used":"已用内存",
-          "free":"剩余内存",
-          "usage":"使用率"
+        mem: {
+          "total": "内存总量",
+          "used": "已用内存",
+          "free": "剩余内存",
+          "usage": "使用率"
         },
-        jvm:{
-          "total":"当前JVM占用的内存总数(M)",
-          "max":"JVM最大可用内存总数(M)",
-          "free":"JVM空闲内存(M)",
-          "version":"JDK版本",
-          "home":"JDK路径",
-          "name":"JDK名称",
-          "startTime":"JDK启动时间",
-          "used":"JVM已用内存(M)",
-          "usage":"JVM使用率",
-          "runTime":"JDK运行时间"
+        jvm: {
+          "total": "当前JVM占用的内存总数(M)",
+          "max": "JVM最大可用内存总数(M)",
+          "free": "JVM空闲内存(M)",
+          "version": "JDK版本",
+          "home": "JDK路径",
+          "name": "JDK名称",
+          "startTime": "JDK启动时间",
+          "used": "JVM已用内存(M)",
+          "usage": "JVM使用率",
+          "runTime": "JDK运行时间"
         },
-        sys:{
-          "computerName":"服务器名称",
-          "computerIp":"服务器Ip",
-          "userDir":"项目路径",
-          "osName":"操作系统",
-          "osArch":"系统架构"
+        sys: {
+          "computerName": "服务器名称",
+          "computerIp": "服务器Ip",
+          "userDir": "项目路径",
+          "osName": "操作系统",
+          "osArch": "系统架构"
         },
         activities: [{
           content: '项目2.0版本提交，完善系统，增加权限控制功能',
@@ -167,11 +192,11 @@
         ]
       }
     },
-    created(){
+    created() {
       this.getServerInfo();
     },
     methods: {
-      jumpUrl (type) {
+      jumpUrl(type) {
         switch (type) {
           case 'home':
             window.open('http://www.whjdz2012.cn')
@@ -187,7 +212,7 @@
             break;
         }
       },
-      getServerInfo(){
+      getServerInfo() {
         let _this = this;
         getServerInfo().then(res => {
           let data = res.data;
@@ -200,10 +225,10 @@
             _keys.push("used");
             _keys.push("sys");
             _keys.push("free");
-            _this._.each(_keys,function (value) {
-              if(value === 'used' || value === 'sys' || value === 'free'){
+            _this._.each(_keys, function (value) {
+              if (value === 'used' || value === 'sys' || value === 'free') {
                 _this.tableDataCpu.push({"label": _this.cpu[value], "value": data.cpu[value] + '%'});
-              }else{
+              } else {
                 _this.tableDataCpu.push({"label": _this.cpu[value], "value": data.cpu[value]});
               }
             });
@@ -217,10 +242,10 @@
             _keys.push("used");
             _keys.push("free");
             _keys.push("usage");
-            _this._.each(_keys,function (value) {
-              if(value === 'usage'){
+            _this._.each(_keys, function (value) {
+              if (value === 'usage') {
                 _this.tableDataMem.push({"label": _this.mem[value], "value": data.mem[value] + '%'});
-              }else{
+              } else {
                 _this.tableDataMem.push({"label": _this.mem[value], "value": data.mem[value]});
               }
             });
@@ -236,10 +261,10 @@
             _keys.push("usage");
             _keys.push("runTime");
 
-            _this._.each(_keys,function (value) {
-              if(value === 'usage'){
+            _this._.each(_keys, function (value) {
+              if (value === 'usage') {
                 _this.tableDataJvm.push({"label": _this.jvm[value], "value": data.jvm[value] + '%'});
-              }else{
+              } else {
                 _this.tableDataJvm.push({"label": _this.jvm[value], "value": data.jvm[value]});
               }
             });
@@ -254,7 +279,7 @@
             _keys.push("userDir");
             _keys.push("osName");
             _keys.push("osArch");
-            _this._.each(_keys,function (value) {
+            _this._.each(_keys, function (value) {
               _this.tableDataSys.push({"label": _this.sys[value], "value": data.sys[value]});
             });
             _this.tableDataSysMerge = _this.tableDataSysMerge.concat(_this.tableDataSys);
@@ -270,7 +295,7 @@
         'roles',
         'introduction'
       ]),
-      serverInfoComputed(){
+      serverInfoComputed() {
         return this.serverInfo
       }
     }
@@ -280,6 +305,7 @@
 <style rel="stylesheet/scss" lang="scss" scoped>
   .el-row {
     margin-bottom: 20px;
+
     &:last-child {
       margin-bottom: 0;
     }
@@ -289,10 +315,12 @@
     i {
       font-size: 18px;
     }
+
     span {
       font-weight: bold;
       margin-left: 10px;
     }
+
     p {
       font-size: 36px;
       color: #666;
@@ -333,17 +361,20 @@
     background-color: #e3e3e3;
     min-height: 100vh;
     padding: 50px 60px 0px;
+
     .pan-info-roles {
       font-size: 12px;
       font-weight: 700;
       color: #333;
       display: block;
     }
+
     .info-container {
       position: relative;
       margin-left: 190px;
       height: 150px;
       line-height: 200px;
+
       .display_name {
         font-size: 48px;
         line-height: 48px;

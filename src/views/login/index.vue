@@ -1,5 +1,6 @@
 <template>
   <div class="login-container">
+    <div class="ms-login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <div class="title-container">
         <h3 class="title">
@@ -43,7 +44,7 @@
         {{ $t('login.logIn') }}
       </el-button>
 
-      <div style="position:relative">
+     <!-- <div style="position:relative">
       <div class="tips">
       <span>{{ $t('login.username') }} : admin</span>
       <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
@@ -54,9 +55,9 @@
       </div>
 
       <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>
-      </div>
+      </div>-->
     </el-form>
-
+    </div>
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog">
     {{ $t('login.thirdpartyTips') }}
     <br>
@@ -95,8 +96,6 @@ export default {
       loginForm: {
         username: 'admin',
         password: '123456'
-        //        username: '',
-        //        password: ''
       },
       loginRules: {
         // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -221,8 +220,8 @@ export default {
   /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
   $bg:#283443;
-  $light_gray:#eee;
-  $cursor: #fff;
+  $light_gray: #0c0006;
+  $cursor: #0c0006;
 
   @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
     .login-container .el-input input{
@@ -237,16 +236,16 @@ export default {
   .login-container {
     .el-input {
       display: inline-block;
-      height: 47px;
+      height: 32px;
       width: 85%;
       input {
-        background: transparent;
+        /*background: transparent;*/
         border: 0px;
         -webkit-appearance: none;
-        border-radius: 0px;
+        border-radius: 4px;
         padding: 12px 5px 12px 15px;
         color: $light_gray;
-        height: 47px;
+        height: 32px;
         caret-color: $cursor;
         &:-webkit-autofill {
           -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
@@ -260,6 +259,16 @@ export default {
       border-radius: 5px;
       color: #454545;
     }
+    .ms-login {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 350px;
+      margin: -180px 0 0 -190px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.3);
+      overflow: hidden;
+    }
   }
 </style>
 
@@ -269,17 +278,14 @@ $dark_gray:#889aa4;
 $light_gray:#eee;
 
 .login-container {
+  background-image: url(../../assets/image/login-bg.jpg);
+  background-size: 100%;
   min-height: 100%;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
   .login-form {
-    position: relative;
-    width: 520px;
-    max-width: 100%;
-    padding: 160px 35px 0;
-    margin: 0 auto;
-    overflow: hidden;
+    padding: 10px 30px;
   }
   .tips {
     font-size: 14px;
@@ -301,11 +307,12 @@ $light_gray:#eee;
   .title-container {
     position: relative;
     .title {
-      font-size: 26px;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
+      width: 100%;
+      line-height: 50px;
       text-align: center;
-      font-weight: bold;
+      font-size: 20px;
+      color: #fff;
+      border-bottom: 1px solid #ddd;
     }
     .set-language {
       color: #fff;

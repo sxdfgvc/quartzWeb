@@ -134,7 +134,9 @@ export default {
     draft: 'Draft',
     delete: 'Eliminar',
     cancel: 'Cancelar',
-    confirm: 'Confirmar'
+    confirm: 'Confirmar',
+    pause: 'Pause',
+    resume: 'Resume'
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
