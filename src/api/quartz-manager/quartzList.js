@@ -39,14 +39,21 @@ export function resumeQuartzJob(name,group) {
   });
 }
 
-export function fetchColumnList(query) {
-  return request({
-    url: '/api/code/database/columnList',
-    method: 'post',
-    data: query
-  });
+export function queryJobDate(name,date) {
+    return request({
+      url: '/api/quartz/getWrongJobDate',
+      method: 'post',
+      data: {'jobName': name,'startTime':date[0],'endTime':date[1]}
+    });
 }
 
+export function queryJobDateList(name,date) {
+  return request({
+    url: '/api/quartz/getWrongJobDateList',
+    method: 'post',
+    data: {'jobName': name, 'startTime': date[0], 'endTime': date[1]}
+  });
+}
 export function saveTable(tableInfo) {
   return request({
     url: '/api/code/database/saveTable',

@@ -3,7 +3,7 @@
 
     <el-row :gutter="20">
       <el-col :span="12">
-        <el-card class="box-card" style="height: 400px;">
+        <el-card class="box-card" style="height: 420px;">
          <!-- <div slot="header" class="clearfix">
             <span>项目介绍</span>
           </div>
@@ -27,6 +27,20 @@
             <el-button type="warning" @click.native="jumpUrl('demo')">演示环境</el-button>
           </div>&ndash;&gt;-->
 <!--          <lineChart ref="myChild"></lineChart>-->
+          <cus-filter-wraper>
+            <el-date-picker
+              v-model="jobQueryTime"
+              format="yyyy-MM-dd HH:mm:ss"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              type="datetimerange"
+              :picker-options="pickerOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              align="right">
+            </el-date-picker>
+            <el-button type="primary" @click="queryJobDate" icon="el-icon-search">查询</el-button>
+          </cus-filter-wraper>
           <line-chart :chart-data="lineChartData"/>
         </el-card>
       </el-col>
@@ -101,23 +115,12 @@
   import TransactionTable from '../admin/components/TransactionTable'
   import {mapGetters} from 'vuex'
   import PanThumb from '@/components/PanThumb'
+  import {queryJobDate,queryJobDateList} from '@/api/quartz-manager/quartzList'
 
-  const lineChartData = {
+  let lineChartData = {
     newVisitis: {
       expectedData: [100, 120, 161, 134, 105, 160, 165],
-      actualData: [120, 82, 91, 154, 162, 140, 145]
-    },
-    messages: {
-      expectedData: [200, 192, 120, 144, 160, 130, 140],
-      actualData: [180, 160, 151, 106, 145, 150, 130]
-    },
-    purchases: {
-      expectedData: [80, 100, 121, 104, 105, 90, 100],
-      actualData: [120, 90, 100, 138, 142, 130, 130]
-    },
-    shoppings: {
-      expectedData: [130, 140, 141, 142, 145, 150, 160],
-      actualData: [120, 82, 91, 154, 162, 140, 130]
+      actualData: [0, 0, 0, 0, 0, 0, 0]
     }
   }
 
@@ -189,7 +192,35 @@
             tag: '2019/08/05',
             content: '项目2.0版本提交，完善系统，增加权限控制功能'
           }
-        ]
+        ],
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
+        jobQueryTime: ''
       }
     },
     created() {
@@ -285,6 +316,25 @@
             _this.tableDataSysMerge = _this.tableDataSysMerge.concat(_this.tableDataSys);
           }
 
+        })
+      },
+      queryJobDate(){
+        let lineChartData = {
+          newVisitis: {
+            expectedData: [165, 160, 105, 134, 161, 120, 100],
+            actualData: [0, 0, 0, 0, 0, 0, 0]
+          }
+        };
+        this.lineChartData=lineChartData.newVisitis;
+        console.log(this.jobQueryTime);
+        let name='';
+        queryJobDateList(name,this.jobQueryTime).then(response => {
+          if (response.code == 200) {
+           for (let i of response.data){
+              console.log(response.data);
+              console.log(i);
+           }
+          }
         })
       }
     },
