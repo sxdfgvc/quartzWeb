@@ -54,10 +54,10 @@ export function queryJobDateList(name,date) {
     data: {'jobName': name, 'startTime': date[0], 'endTime': date[1]}
   });
 }
-export function saveTable(tableInfo) {
+export function triggerQuartzJobNow(multipleSelection) {
   return request({
-    url: '/api/code/database/saveTable',
+    url: '/api/quartz/triggerQuartzJobNow',
     method: 'post',
-    data: tableInfo
+    data: multipleSelection
   });
 }

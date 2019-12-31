@@ -50,7 +50,7 @@
             <span>更新日志</span>
           </div>
           <template>
-            <light-timeline :items='items'></light-timeline>
+<!--            <light-timeline :items='items'></light-timeline>-->
           </template>
         </el-card>
       </el-col>
